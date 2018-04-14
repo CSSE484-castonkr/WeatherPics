@@ -9,23 +9,23 @@
 /* Begin PBXBuildFile section */
 		8DFA2EB1208106A8003483B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA2EB0208106A8003483B4 /* AppDelegate.swift */; };
 		8DFA2EB4208106A8003483B4 /* WeatherPics.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA2EB2208106A8003483B4 /* WeatherPics.xcdatamodeld */; };
-		8DFA2EB6208106A8003483B4 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA2EB5208106A8003483B4 /* MasterViewController.swift */; };
-		8DFA2EB8208106A8003483B4 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA2EB7208106A8003483B4 /* DetailViewController.swift */; };
 		8DFA2EBB208106A8003483B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DFA2EB9208106A8003483B4 /* Main.storyboard */; };
 		8DFA2EBD208106AB003483B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DFA2EBC208106AB003483B4 /* Assets.xcassets */; };
 		8DFA2EC0208106AB003483B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DFA2EBE208106AB003483B4 /* LaunchScreen.storyboard */; };
+		8DFA2EC8208108E0003483B4 /* WeatherPicsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA2EC7208108E0003483B4 /* WeatherPicsTableViewController.swift */; };
+		8DFA2ECA20810CD8003483B4 /* WeatherPic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA2EC920810CD8003483B4 /* WeatherPic.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8DFA2EAD208106A8003483B4 /* WeatherPics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherPics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DFA2EB0208106A8003483B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8DFA2EB3208106A8003483B4 /* WeatherPics.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WeatherPics.xcdatamodel; sourceTree = "<group>"; };
-		8DFA2EB5208106A8003483B4 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
-		8DFA2EB7208106A8003483B4 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		8DFA2EBA208106A8003483B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8DFA2EBC208106AB003483B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8DFA2EBF208106AB003483B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8DFA2EC1208106AB003483B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DFA2EC7208108E0003483B4 /* WeatherPicsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPicsTableViewController.swift; sourceTree = "<group>"; };
+		8DFA2EC920810CD8003483B4 /* WeatherPic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,13 +59,13 @@
 			isa = PBXGroup;
 			children = (
 				8DFA2EB0208106A8003483B4 /* AppDelegate.swift */,
-				8DFA2EB5208106A8003483B4 /* MasterViewController.swift */,
-				8DFA2EB7208106A8003483B4 /* DetailViewController.swift */,
 				8DFA2EB9208106A8003483B4 /* Main.storyboard */,
 				8DFA2EBC208106AB003483B4 /* Assets.xcassets */,
 				8DFA2EBE208106AB003483B4 /* LaunchScreen.storyboard */,
 				8DFA2EC1208106AB003483B4 /* Info.plist */,
 				8DFA2EB2208106A8003483B4 /* WeatherPics.xcdatamodeld */,
+				8DFA2EC7208108E0003483B4 /* WeatherPicsTableViewController.swift */,
+				8DFA2EC920810CD8003483B4 /* WeatherPic.swift */,
 			);
 			path = WeatherPics;
 			sourceTree = "<group>";
@@ -142,9 +142,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DFA2EB1208106A8003483B4 /* AppDelegate.swift in Sources */,
+				8DFA2EC8208108E0003483B4 /* WeatherPicsTableViewController.swift in Sources */,
 				8DFA2EB4208106A8003483B4 /* WeatherPics.xcdatamodeld in Sources */,
-				8DFA2EB6208106A8003483B4 /* MasterViewController.swift in Sources */,
-				8DFA2EB8208106A8003483B4 /* DetailViewController.swift in Sources */,
+				8DFA2ECA20810CD8003483B4 /* WeatherPic.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
