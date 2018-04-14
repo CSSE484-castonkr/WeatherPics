@@ -12,6 +12,7 @@ class WeatherPicsTableViewController: UITableViewController {
 
     let weatherPicCellIdentifier = "WeatherPicCell"
     let noWeatherPicsCellIdentifier = "NoWeatherPicsCell"
+    let showDetailSegueIdentifier = "ShowDetailSegue"
     var weatherPics = [WeatherPic]()
     
     override func viewDidLoad() {

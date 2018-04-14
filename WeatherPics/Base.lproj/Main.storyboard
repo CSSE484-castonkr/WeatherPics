@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,6 +35,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="eNX-UL-iax" kind="show" identifier="ShowDetailSegue" id="G4h-OL-PSP"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoWeatherPicsCell" textLabel="9rV-8u-CN4" style="IBUITableViewCellStyleDefault" id="csn-Vd-e4Z">
                                 <rect key="frame" x="0.0" y="72" width="375" height="44"/>
@@ -64,6 +68,49 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Qw-V6-AAN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-189" y="-454"/>
+        </scene>
+        <!--Weather Pic Detail View Controller-->
+        <scene sceneID="jAv-tW-bCk">
+            <objects>
+                <viewController id="eNX-UL-iax" customClass="WeatherPicDetailViewController" customModule="WeatherPics" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rrW-8k-v53">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Caption goes here" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P3L-60-EDS">
+                                <rect key="frame" x="117" y="596.5" width="140" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="MUn-Uo-igj">
+                                <rect key="frame" x="109" y="323" width="156" height="20"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="71s-Cj-wWw">
+                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading image..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nrc-GX-i4i">
+                                        <rect key="frame" x="30" y="0.0" width="126" height="20"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="P3L-60-EDS" firstAttribute="centerX" secondItem="MUn-Uo-igj" secondAttribute="centerX" id="Krl-QC-FN3"/>
+                            <constraint firstItem="MUn-Uo-igj" firstAttribute="centerY" secondItem="rrW-8k-v53" secondAttribute="centerY" id="PKA-Tb-iVu"/>
+                            <constraint firstItem="MUn-Uo-igj" firstAttribute="centerX" secondItem="Opn-Tw-fKe" secondAttribute="centerX" id="UId-gY-67k"/>
+                            <constraint firstItem="Opn-Tw-fKe" firstAttribute="bottom" secondItem="P3L-60-EDS" secondAttribute="bottom" constant="50" id="vGF-Jt-nyq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Opn-Tw-fKe"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ohb-sn-olR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="812" y="-455"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WDH-Ys-Nq3">

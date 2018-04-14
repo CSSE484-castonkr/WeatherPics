@@ -14,6 +14,7 @@
 		8DFA2EC0208106AB003483B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DFA2EBE208106AB003483B4 /* LaunchScreen.storyboard */; };
 		8DFA2EC8208108E0003483B4 /* WeatherPicsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA2EC7208108E0003483B4 /* WeatherPicsTableViewController.swift */; };
 		8DFA2ECA20810CD8003483B4 /* WeatherPic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA2EC920810CD8003483B4 /* WeatherPic.swift */; };
+		8DFA2ECC2081809A003483B4 /* WeatherPicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA2ECB2081809A003483B4 /* WeatherPicDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		8DFA2EC1208106AB003483B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DFA2EC7208108E0003483B4 /* WeatherPicsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPicsTableViewController.swift; sourceTree = "<group>"; };
 		8DFA2EC920810CD8003483B4 /* WeatherPic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPic.swift; sourceTree = "<group>"; };
+		8DFA2ECB2081809A003483B4 /* WeatherPicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPicDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				8DFA2EB2208106A8003483B4 /* WeatherPics.xcdatamodeld */,
 				8DFA2EC7208108E0003483B4 /* WeatherPicsTableViewController.swift */,
 				8DFA2EC920810CD8003483B4 /* WeatherPic.swift */,
+				8DFA2ECB2081809A003483B4 /* WeatherPicDetailViewController.swift */,
 			);
 			path = WeatherPics;
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DFA2EB1208106A8003483B4 /* AppDelegate.swift in Sources */,
+				8DFA2ECC2081809A003483B4 /* WeatherPicDetailViewController.swift in Sources */,
 				8DFA2EC8208108E0003483B4 /* WeatherPicsTableViewController.swift in Sources */,
 				8DFA2EB4208106A8003483B4 /* WeatherPics.xcdatamodeld in Sources */,
 				8DFA2ECA20810CD8003483B4 /* WeatherPic.swift in Sources */,
