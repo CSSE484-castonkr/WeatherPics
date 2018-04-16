@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class WeatherPicsTableViewController: UITableViewController {
 
+    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     let weatherPicCellIdentifier = "WeatherPicCell"
     let noWeatherPicsCellIdentifier = "NoWeatherPicsCell"
     let showDetailSegueIdentifier = "ShowDetailSegue"
@@ -26,6 +29,7 @@ class WeatherPicsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        updateWeatherPicArray()
         tableView.reloadData()
     }
 
@@ -50,18 +54,21 @@ class WeatherPicsTableViewController: UITableViewController {
                                             (action) in
                                             let captionTextField = alertController.textFields![0]
                                             let imageURLTextField = alertController.textFields![1]
-                                            print("captionTextField = \(captionTextField.text!)")
-                                            print("imageURLTextField = \(imageURLTextField.text!)")
-                                            let weatherPic = WeatherPic(caption: captionTextField.text!,
-                                                                        imageURL: imageURLTextField.text!)
-                                            self.weatherPics.insert(weatherPic, at: 0)
                                             
-                                            if self.weatherPics.count == 1{
-                                                self.tableView.reloadData()
-                                            } else{ // animations
-                                                self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)],
-                                                                          with: UITableViewRowAnimation.top)
+                                            let newWeatherPic = WeatherPic(context: self.context)
+    
+                                            if imageURLTextField.text! == "" {
+                                                newWeatherPic.imageURL = self.getRandomImageUrl()
+                                            } else {
+                                                newWeatherPic.imageURL = imageURLTextField.text!
                                             }
+                                            
+                                            newWeatherPic.caption = captionTextField.text!
+                                            newWeatherPic.created =  Date()
+                                            self.saveContext()
+                                            self.updateWeatherPicArray()
+                                            self.tableView.reloadData()
+                           
         }
         
         alertController.addAction(cancelAction)
@@ -69,6 +76,32 @@ class WeatherPicsTableViewController: UITableViewController {
         present(alertController, animated: true, completion: nil)
     }
  
+    func getRandomImageUrl() -> String {
+        let testImages = ["https://upload.wikimedia.org/wikipedia/commons/0/04/Hurricane_Isabel_from_ISS.jpg",
+                          "https://upload.wikimedia.org/wikipedia/commons/0/00/Flood102405.JPG",
+                          "https://upload.wikimedia.org/wikipedia/commons/6/6b/Mount_Carmel_forest_fire14.jpg"]
+        let randomIndex = Int(arc4random_uniform(UInt32(testImages.count)))
+        return testImages[randomIndex];
+    }
+    
+    func saveContext() {
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+    }
+    
+    func updateWeatherPicArray() {
+        // Make a fetch request
+        // Execute the request in a try/catch block
+        let request: NSFetchRequest<WeatherPic> = WeatherPic.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "created", ascending: false)]
+        
+        do {
+            weatherPics = try context.fetch(request)
+        } catch {
+            fatalError("Unresolved Core Data error \(error)")
+        }
+    }
+    
+    
     override func setEditing(_ editing: Bool, animated: Bool) {
         if weatherPics.count == 0 {
             super.setEditing(false, animated: animated)
@@ -112,8 +145,11 @@ class WeatherPicsTableViewController: UITableViewController {
                             commit editingStyle: UITableViewCellEditingStyle,
                             forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            context.delete(weatherPics[indexPath.row])
+            self.saveContext()
+            updateWeatherPicArray()
+            
             // Delete the row from the data source
-            weatherPics.remove(at: indexPath.row)
             if weatherPics.count == 0 {
                 tableView.reloadData()
                 self.setEditing(false, animated: true)
@@ -124,15 +160,21 @@ class WeatherPicsTableViewController: UITableViewController {
             }
         }    
     }
+  
     
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == showDetailSegueIdentifier {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                (segue.destination as! WeatherPicDetailViewController).photo = weatherPics[indexPath.row]
+            }
+        }
     }
-    */
+    
 
 }
