@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import Firebase
 
 class WeatherPicDetailViewController: UIViewController {
 
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
+    var photoRef: DocumentReference?
+    var photoListener: ListenerRegistration!
     var photo: WeatherPic?
     
     override func viewDidLoad() {
@@ -22,6 +25,32 @@ class WeatherPicDetailViewController: UIViewController {
                                                             action: #selector(showEditDialog))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        photoListener = photoRef?.addSnapshotListener({ (documentSnapshot, error) in
+            if let error = error {
+                print("Error getting the document: \(error.localizedDescription)")
+                return
+            }
+            if !documentSnapshot!.exists {
+                print("This document got deleted by someone else")
+                return
+            }
+            self.photo = WeatherPic(documentSnapshot: documentSnapshot!)
+            self.updateView()
+        })
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        photoListener.remove()
+    }
+
+    func updateView() {
+        captionLabel.text = photo?.caption
+//        movieLabel.text = photo?.movie
+    }
+
     @objc func showEditDialog() {
         let alertController = UIAlertController(title: "Edit caption",
                                                 message: "",
@@ -41,22 +70,11 @@ class WeatherPicDetailViewController: UIViewController {
                                             (action) in
                                             let captionTextField = alertController.textFields![0]
                                             self.photo?.caption = captionTextField.text!
-                                            self.saveContext()
-                                            self.captionLabel.text = self.photo?.caption
+                                            self.photoRef?.setData(self.photo!.data)
         }
         alertController.addAction(cancelAction)
         alertController.addAction(updateAction)
         present(alertController, animated: true, completion: nil)
-    }
-    
-    func saveContext() {
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.captionLabel.text = self.photo?.caption
     }
     
     override func viewDidAppear(_ animated: Bool) {

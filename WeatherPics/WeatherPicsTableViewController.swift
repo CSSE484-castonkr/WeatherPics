@@ -7,11 +7,12 @@
 //
 
 import UIKit
-import CoreData
+import Firebase
 
 class WeatherPicsTableViewController: UITableViewController {
-
-    var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    var picsRef: CollectionReference!
+    var picsListener: ListenerRegistration!
     
     let weatherPicCellIdentifier = "WeatherPicCell"
     let noWeatherPicsCellIdentifier = "NoWeatherPicsCell"
@@ -25,14 +26,68 @@ class WeatherPicsTableViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(showAddDialog))
+        picsRef = Firestore.firestore().collection("pics")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateWeatherPicArray()
-        tableView.reloadData()
+        self.weatherPics.removeAll()
+        picsListener = picsRef.order(by: "created", descending: true).limit(to: 50).addSnapshotListener({ (querySnapshot, error) in
+            guard let snapshot = querySnapshot else {
+                print("Error fetching quotes. error: \(error!.localizedDescription)")
+                return
+            }
+            snapshot.documentChanges.forEach{(docChange) in
+                if (docChange.type == .added){
+                    print("New pic: \(docChange.document.data())")
+                    self.picAdded(docChange.document)
+                } else if (docChange.type == .modified){
+                    print("Modified pic: \(docChange.document.data())")
+                    self.picUpdated(docChange.document)
+                } else if (docChange.type == .removed){
+                    print("Removed pic: \(docChange.document.data())")
+                    self.picRemoved(docChange.document)
+                }
+            }
+            self.weatherPics.sort(by: { (pic1, pic2) -> Bool in
+                return pic1.created > pic2.created
+            })
+            self.tableView.reloadData()
+        })
+        
     }
-
+    
+    func picAdded(_ document: DocumentSnapshot) {
+        let newWeatherPic = WeatherPic(documentSnapshot: document)
+        weatherPics.append(newWeatherPic)
+    }
+    
+    func picUpdated(_ document: DocumentSnapshot) {
+        let modifiedWeatherPic = WeatherPic(documentSnapshot: document)
+        
+        for weatherPic in weatherPics {
+            if (weatherPic.id == modifiedWeatherPic.id) {
+                weatherPic.caption = modifiedWeatherPic.caption
+                weatherPic.imageURL = modifiedWeatherPic.imageURL
+                break
+            }
+        }
+    }
+    
+    func picRemoved(_ document: DocumentSnapshot) {
+        for i in 0..<weatherPics.count {
+            if weatherPics[i].id == document.documentID {
+                weatherPics.remove(at: i)
+                break
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        picsListener.remove()
+    }
+    
     @objc func showAddDialog() {
         let alertController = UIAlertController(title: "Create a new weather pic:",
                             message: "",
@@ -55,27 +110,16 @@ class WeatherPicsTableViewController: UITableViewController {
                                             let captionTextField = alertController.textFields![0]
                                             let imageURLTextField = alertController.textFields![1]
                                             
-                                            let newWeatherPic = WeatherPic(context: self.context)
+                                            let newWeatherPic = WeatherPic(caption: captionTextField.text!,
+                                                                           imageURL: imageURLTextField.text!)
     
-                                            if imageURLTextField.text! == "" {
-                                                newWeatherPic.imageURL = self.getRandomImageUrl()
-                                            } else {
-                                                newWeatherPic.imageURL = imageURLTextField.text!
-                                            }
-                                            
-                                            newWeatherPic.caption = captionTextField.text!
-                                            newWeatherPic.created =  Date()
-                                            self.saveContext()
-                                            self.updateWeatherPicArray()
-                                            self.tableView.reloadData()
-                           
+                                            self.picsRef.addDocument(data: newWeatherPic.data)
         }
-        
         alertController.addAction(cancelAction)
         alertController.addAction(createAction)
         present(alertController, animated: true, completion: nil)
     }
- 
+    
     func getRandomImageUrl() -> String {
         let testImages = ["https://upload.wikimedia.org/wikipedia/commons/0/04/Hurricane_Isabel_from_ISS.jpg",
                           "https://upload.wikimedia.org/wikipedia/commons/0/00/Flood102405.JPG",
@@ -83,24 +127,6 @@ class WeatherPicsTableViewController: UITableViewController {
         let randomIndex = Int(arc4random_uniform(UInt32(testImages.count)))
         return testImages[randomIndex];
     }
-    
-    func saveContext() {
-        (UIApplication.shared.delegate as! AppDelegate).saveContext()
-    }
-    
-    func updateWeatherPicArray() {
-        // Make a fetch request
-        // Execute the request in a try/catch block
-        let request: NSFetchRequest<WeatherPic> = WeatherPic.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: "created", ascending: false)]
-        
-        do {
-            weatherPics = try context.fetch(request)
-        } catch {
-            fatalError("Unresolved Core Data error \(error)")
-        }
-    }
-    
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         if weatherPics.count == 0 {
@@ -145,19 +171,8 @@ class WeatherPicsTableViewController: UITableViewController {
                             commit editingStyle: UITableViewCellEditingStyle,
                             forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            context.delete(weatherPics[indexPath.row])
-            self.saveContext()
-            updateWeatherPicArray()
-            
-            // Delete the row from the data source
-            if weatherPics.count == 0 {
-                tableView.reloadData()
-                self.setEditing(false, animated: true)
-            }
-         else {
-            tableView.deleteRows(at: [indexPath],
-                                 with: .fade)
-            }
+            let weatherPicToDelete = weatherPics[indexPath.row]
+            picsRef.document(weatherPicToDelete.id!).delete()
         }    
     }
   
@@ -171,10 +186,8 @@ class WeatherPicsTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
         if segue.identifier == showDetailSegueIdentifier {
             if let indexPath = tableView.indexPathForSelectedRow {
-                (segue.destination as! WeatherPicDetailViewController).photo = weatherPics[indexPath.row]
+                (segue.destination as! WeatherPicDetailViewController).photoRef = picsRef.document(weatherPics[indexPath.row].id!)
             }
         }
     }
-    
-
 }
