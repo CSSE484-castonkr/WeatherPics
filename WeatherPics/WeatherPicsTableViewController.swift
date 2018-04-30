@@ -11,6 +11,7 @@ import Firebase
 
 class WeatherPicsTableViewController: UITableViewController {
     
+    var docRef: DocumentReference!
     var picsRef: CollectionReference!
     var picsListener: ListenerRegistration!
     
@@ -27,10 +28,12 @@ class WeatherPicsTableViewController: UITableViewController {
                                                             target: self,
                                                             action: #selector(showAddDialog))
         picsRef = Firestore.firestore().collection("pics")
+        docRef = Firestore.firestore().collection("pics").document("title")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setTitle()
         self.weatherPics.removeAll()
         picsListener = picsRef.order(by: "created", descending: true).limit(to: 50).addSnapshotListener({ (querySnapshot, error) in
             guard let snapshot = querySnapshot else {
@@ -55,6 +58,16 @@ class WeatherPicsTableViewController: UITableViewController {
             self.tableView.reloadData()
         })
         
+    }
+    
+    func setTitle() {
+        docRef.getDocument { (documentSnapshot, error) in
+            if let error = error {
+                print("Error fetching document. \(error.localizedDescription)")
+                return
+            }
+            self.navigationItem.title = documentSnapshot?.get("title") as? String
+        }
     }
     
     func picAdded(_ document: DocumentSnapshot) {
@@ -112,7 +125,13 @@ class WeatherPicsTableViewController: UITableViewController {
                                             
                                             let newWeatherPic = WeatherPic(caption: captionTextField.text!,
                                                                            imageURL: imageURLTextField.text!)
-    
+                                            
+                                            if imageURLTextField.text! == "" {
+                                                newWeatherPic.imageURL = self.getRandomImageUrl()
+                                            } else {
+                                                newWeatherPic.imageURL = imageURLTextField.text!
+                                            }
+                                            
                                             self.picsRef.addDocument(data: newWeatherPic.data)
         }
         alertController.addAction(cancelAction)
