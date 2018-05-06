@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if Auth.auth().currentUser == nil {
             showLoginViewController()
         } else {
-            showWeatherPicsTableViewController()
+            showPhotoViewController()
         }
         
         return true
@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    }
     
     func handleLogin() {
-        showWeatherPicsTableViewController();
+        showPhotoViewController();
     }
     
     @objc func handleLogout() {
@@ -79,9 +79,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.rootViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
     }
     
-    func showWeatherPicsTableViewController() {
+    func showPhotoViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-         window!.rootViewController = storyboard.instantiateViewController(withIdentifier: "WeatherPicsTableViewController")
+         window!.rootViewController = storyboard.instantiateViewController(withIdentifier: "PhotoViewController")
     }
 }
 

@@ -263,7 +263,7 @@
         <!--Navigation Controller-->
         <scene sceneID="WDH-Ys-Nq3">
             <objects>
-                <navigationController id="n3k-tn-Ptv" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="PhotoViewController" id="n3k-tn-Ptv" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kLr-46-R3k">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

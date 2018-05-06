@@ -134,69 +134,66 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
                                                 message: "",
                                                 preferredStyle: .actionSheet)
         
+        let addPhotoActionButton = UIAlertAction(title: "Add Photo",
+                                                 style: .default) { (action) in
+                                                    self.showAddDialog()
+                                                    print("add")
+        }
+        
+        let signoutActionButton = UIAlertAction(title: "Sign out",
+                                                style: .destructive) { (action) in
+                                                    self.appDelegate.handleLogout()
+        }
+        
         let cancelActionButton = UIAlertAction(title: "Cancel",
-                                               style: .cancel) { _ in
-                        print("Cancel")
-                    }
-      
+                                               style: .cancel,
+                                               handler: nil)
+        
+        alertController.addAction(addPhotoActionButton)
+        alertController.addAction(signoutActionButton)
         alertController.addAction(cancelActionButton)
         
         self.present(alertController, animated: true, completion: nil)
-       
-        //        let saveActionButton = UIAlertAction(title: "Save", style: .default)
-        //        { _ in
-        //            print("Save")
-        //        }
-        //        actionSheetControllerIOS8.addAction(saveActionButton)
-        //
-        //        let deleteActionButton = UIAlertAction(title: "Delete", style: .default)
-        //        { _ in
-        //            print("Delete")
-        //        }
-        //        actionSheetControllerIOS8.addAction(deleteActionButton)
-        //        self.present(actionSheetControllerIOS8, animated: true, completion: nil)
-        
-        
     }
     
     
-    //    @objc func showAddDialog() {
-    //        let alertController = UIAlertController(title: "Create a new weather pic:",
-    //                            message: "",
-    //                            preferredStyle: .alert)
-    //
-    //        alertController.addTextField { (textField) in
-    //            textField.placeholder = "Caption"
-    //        }
-    //        alertController.addTextField { (textField) in
-    //            textField.placeholder = "Image URL (or blank)"
-    //        }
-    //
-    //        let cancelAction = UIAlertAction(title: "Cancel",
-    //                                         style: .cancel,
-    //                                         handler: nil)
-    //
-    //        let createAction = UIAlertAction(title: "Create",
-    //                                         style: .default) {
-    //                                            (action) in
-    //                                            let captionTextField = alertController.textFields![0]
-    //                                            let imageURLTextField = alertController.textFields![1]
-    //
-    //                                            let newWeatherPic = WeatherPic(caption: captionTextField.text!,
-    //                                                                           imageURL: imageURLTextField.text!)
-    //
-    //                                            if imageURLTextField.text! == "" {
-    //                                                newWeatherPic.imageURL = self.getRandomImageUrl()
-    //                                            } else {
-    //                                                newWeatherPic.imageURL = imageURLTextField.text!
-    //                                            }
-    //
-    //                                            self.picsRef.addDocument(data: newWeatherPic.data)
-    //        }
-    //        alertController.addAction(cancelAction)
-    //        alertController.addAction(createAction)
-    //        present(alertController, animated: true, completion: nil)
-    //    }
+    @objc func showAddDialog() {
+        let alertController = UIAlertController(title: "Create a new weather pic:",
+                                                message: "",
+                                                preferredStyle: .alert)
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Caption"
+        }
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Image URL (or blank)"
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel",
+                                         style: .cancel,
+                                         handler: nil)
+        
+        let createAction = UIAlertAction(title: "Create",
+                                         style: .default) {
+                                            (action) in
+                                            let captionTextField = alertController.textFields![0]
+                                            let imageURLTextField = alertController.textFields![1]
+                                            
+                                            let newWeatherPic = WeatherPic(caption: captionTextField.text!,
+                                                                           imageURL: imageURLTextField.text!)
+                                            
+                                            if imageURLTextField.text! == "" {
+                                                newWeatherPic.imageURL = self.getRandomImageUrl()
+                                            } else {
+                                                newWeatherPic.imageURL = imageURLTextField.text!
+                                            }
+                                            
+                                            self.picsRef.addDocument(data: newWeatherPic.data)
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(createAction)
+        present(alertController, animated: true, completion: nil)
+    }
     
     func getRandomImageUrl() -> String {
         let testImages = ["https://upload.wikimedia.org/wikipedia/commons/0/04/Hurricane_Isabel_from_ISS.jpg",
@@ -248,7 +245,7 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
         if editingStyle == .delete {
             let weatherPicToDelete = weatherPics[indexPath.row]
             picsRef.document(weatherPicToDelete.id!).delete()
-        }    
+        }
     }
     
     
