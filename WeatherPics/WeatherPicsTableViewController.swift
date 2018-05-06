@@ -14,21 +14,22 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
     var docRef: DocumentReference!
     var picsRef: CollectionReference!
     var picsListener: ListenerRegistration!
+    var myPhotosQuery: Query!
+    var weatherPics = [WeatherPic]()
     
     let weatherPicCellIdentifier = "WeatherPicCell"
     let noWeatherPicsCellIdentifier = "NoWeatherPicsCell"
     let showDetailSegueIdentifier = "ShowDetailSegue"
-    var weatherPics = [WeatherPic]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //        navigationItem.leftBarButtonItem = self.editButtonItem
-        //        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-        //                                                            target: self,
-        //                                                            action: #selector(showAddDialog))
         picsRef = Firestore.firestore().collection("pics")
         docRef = Firestore.firestore().collection("pics").document("title")
+        if let currentUser = Auth.auth().currentUser {
+            myPhotosQuery = picsRef
+                .whereField("uid", isEqualTo: currentUser.uid)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,34 +70,6 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
             self.navigationItem.title = documentSnapshot?.get("title") as? String
         }
     }
-    
-    //    @IBAction func menuButtonPressed(_ sender: Any) {
-    //        print("Menu button pressed")
-    //        let actionSheet = UIActionSheet(title: "Choose Option", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil, otherButtonTitles: "Save", "Delete")
-    //
-    //        actionSheet.showInView(self.view)
-    
-    //        let actionSheetController = UIAlertController(title: "Please select", message: "Option to select", preferredStyle: .ActionSheet)
-    //
-    //        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
-    //            print("Cancel")
-    //        }
-    //        actionSheetControllerIOS8.addAction(cancelActionButton)
-    //
-    //        let saveActionButton = UIAlertAction(title: "Save", style: .default)
-    //        { _ in
-    //            print("Save")
-    //        }
-    //        actionSheetControllerIOS8.addAction(saveActionButton)
-    //
-    //        let deleteActionButton = UIAlertAction(title: "Delete", style: .default)
-    //        { _ in
-    //            print("Delete")
-    //        }
-    //        actionSheetControllerIOS8.addAction(deleteActionButton)
-    //        self.present(actionSheetControllerIOS8, animated: true, completion: nil)
-    
-    //    }
     
     func picAdded(_ document: DocumentSnapshot) {
         let newWeatherPic = WeatherPic(documentSnapshot: document)
@@ -140,6 +113,16 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
                                                     print("add")
         }
         
+        let editPhotoActionButton = UIAlertAction(title: "edit",
+                                                  style: .default) { (action) in
+                                                    print("edit")
+        }
+        
+        let showPhotosActionButton = UIAlertAction(title: "Show photos",
+                                                   style: .default) { (action) in
+                                                    print("show photos")
+        }
+        
         let signoutActionButton = UIAlertAction(title: "Sign out",
                                                 style: .destructive) { (action) in
                                                     self.appDelegate.handleLogout()
@@ -150,6 +133,8 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
                                                handler: nil)
         
         alertController.addAction(addPhotoActionButton)
+        alertController.addAction(editPhotoActionButton)
+        alertController.addAction(showPhotosActionButton)
         alertController.addAction(signoutActionButton)
         alertController.addAction(cancelActionButton)
         
@@ -210,8 +195,6 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
             super.setEditing(editing, animated: animated)
         }
     }
-    
-    
     
     // MARK: - Table view data source
     

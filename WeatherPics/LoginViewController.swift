@@ -12,7 +12,7 @@ import Firebase
 import Rosefire
 import GoogleSignIn
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, GIDSignInUIDelegate {
     
     let ROSEFIRE_REGISTRY_TOKEN = "87a64c7c-2e4c-4aa6-ad17-b2b0f71c75e1"
     
@@ -23,8 +23,8 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         prepareView()
         
-//        GIDSignIn.sharedInstance().uiDelegate = self
-//        googleLoginButton.style = .wide
+        GIDSignIn.sharedInstance().uiDelegate = self
+        //        googleLoginButton.style = .wide
         
     }
     
@@ -37,7 +37,7 @@ class LoginViewController: UIViewController {
         rosefireLoginButton.pulseColor = .white
         
         // Google OAuth
-        //    googleLoginButton.style = .wide
+        googleLoginButton.style = .wide
         
     }
     
