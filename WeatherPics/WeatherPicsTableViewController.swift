@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class WeatherPicsTableViewController: UITableViewController {
+class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelegate {
     
     var docRef: DocumentReference!
     var picsRef: CollectionReference!
@@ -22,11 +22,11 @@ class WeatherPicsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationItem.leftBarButtonItem = self.editButtonItem
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-                                                            target: self,
-                                                            action: #selector(showAddDialog))
+        
+        //        navigationItem.leftBarButtonItem = self.editButtonItem
+        //        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+        //                                                            target: self,
+        //                                                            action: #selector(showAddDialog))
         picsRef = Firestore.firestore().collection("pics")
         docRef = Firestore.firestore().collection("pics").document("title")
     }
@@ -70,6 +70,34 @@ class WeatherPicsTableViewController: UITableViewController {
         }
     }
     
+    //    @IBAction func menuButtonPressed(_ sender: Any) {
+    //        print("Menu button pressed")
+    //        let actionSheet = UIActionSheet(title: "Choose Option", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil, otherButtonTitles: "Save", "Delete")
+    //
+    //        actionSheet.showInView(self.view)
+    
+    //        let actionSheetController = UIAlertController(title: "Please select", message: "Option to select", preferredStyle: .ActionSheet)
+    //
+    //        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+    //            print("Cancel")
+    //        }
+    //        actionSheetControllerIOS8.addAction(cancelActionButton)
+    //
+    //        let saveActionButton = UIAlertAction(title: "Save", style: .default)
+    //        { _ in
+    //            print("Save")
+    //        }
+    //        actionSheetControllerIOS8.addAction(saveActionButton)
+    //
+    //        let deleteActionButton = UIAlertAction(title: "Delete", style: .default)
+    //        { _ in
+    //            print("Delete")
+    //        }
+    //        actionSheetControllerIOS8.addAction(deleteActionButton)
+    //        self.present(actionSheetControllerIOS8, animated: true, completion: nil)
+    
+    //    }
+    
     func picAdded(_ document: DocumentSnapshot) {
         let newWeatherPic = WeatherPic(documentSnapshot: document)
         weatherPics.append(newWeatherPic)
@@ -101,43 +129,74 @@ class WeatherPicsTableViewController: UITableViewController {
         picsListener.remove()
     }
     
-    @objc func showAddDialog() {
-        let alertController = UIAlertController(title: "Create a new weather pic:",
-                            message: "",
-                            preferredStyle: .alert)
+    @IBAction func menuButtonPressed(_ sender: Any) {
+        let alertController = UIAlertController(title: "Photo Bucket Options",
+                                                message: "",
+                                                preferredStyle: .actionSheet)
         
-        alertController.addTextField { (textField) in
-            textField.placeholder = "Caption"
-        }
-        alertController.addTextField { (textField) in
-            textField.placeholder = "Image URL (or blank)"
-        }
+        let cancelActionButton = UIAlertAction(title: "Cancel",
+                                               style: .cancel) { _ in
+                        print("Cancel")
+                    }
+      
+        alertController.addAction(cancelActionButton)
         
-        let cancelAction = UIAlertAction(title: "Cancel",
-                                         style: .cancel,
-                                         handler: nil)
+        self.present(alertController, animated: true, completion: nil)
+       
+        //        let saveActionButton = UIAlertAction(title: "Save", style: .default)
+        //        { _ in
+        //            print("Save")
+        //        }
+        //        actionSheetControllerIOS8.addAction(saveActionButton)
+        //
+        //        let deleteActionButton = UIAlertAction(title: "Delete", style: .default)
+        //        { _ in
+        //            print("Delete")
+        //        }
+        //        actionSheetControllerIOS8.addAction(deleteActionButton)
+        //        self.present(actionSheetControllerIOS8, animated: true, completion: nil)
         
-        let createAction = UIAlertAction(title: "Create",
-                                         style: .default) {
-                                            (action) in
-                                            let captionTextField = alertController.textFields![0]
-                                            let imageURLTextField = alertController.textFields![1]
-                                            
-                                            let newWeatherPic = WeatherPic(caption: captionTextField.text!,
-                                                                           imageURL: imageURLTextField.text!)
-                                            
-                                            if imageURLTextField.text! == "" {
-                                                newWeatherPic.imageURL = self.getRandomImageUrl()
-                                            } else {
-                                                newWeatherPic.imageURL = imageURLTextField.text!
-                                            }
-                                            
-                                            self.picsRef.addDocument(data: newWeatherPic.data)
-        }
-        alertController.addAction(cancelAction)
-        alertController.addAction(createAction)
-        present(alertController, animated: true, completion: nil)
+        
     }
+    
+    
+    //    @objc func showAddDialog() {
+    //        let alertController = UIAlertController(title: "Create a new weather pic:",
+    //                            message: "",
+    //                            preferredStyle: .alert)
+    //
+    //        alertController.addTextField { (textField) in
+    //            textField.placeholder = "Caption"
+    //        }
+    //        alertController.addTextField { (textField) in
+    //            textField.placeholder = "Image URL (or blank)"
+    //        }
+    //
+    //        let cancelAction = UIAlertAction(title: "Cancel",
+    //                                         style: .cancel,
+    //                                         handler: nil)
+    //
+    //        let createAction = UIAlertAction(title: "Create",
+    //                                         style: .default) {
+    //                                            (action) in
+    //                                            let captionTextField = alertController.textFields![0]
+    //                                            let imageURLTextField = alertController.textFields![1]
+    //
+    //                                            let newWeatherPic = WeatherPic(caption: captionTextField.text!,
+    //                                                                           imageURL: imageURLTextField.text!)
+    //
+    //                                            if imageURLTextField.text! == "" {
+    //                                                newWeatherPic.imageURL = self.getRandomImageUrl()
+    //                                            } else {
+    //                                                newWeatherPic.imageURL = imageURLTextField.text!
+    //                                            }
+    //
+    //                                            self.picsRef.addDocument(data: newWeatherPic.data)
+    //        }
+    //        alertController.addAction(cancelAction)
+    //        alertController.addAction(createAction)
+    //        present(alertController, animated: true, completion: nil)
+    //    }
     
     func getRandomImageUrl() -> String {
         let testImages = ["https://upload.wikimedia.org/wikipedia/commons/0/04/Hurricane_Isabel_from_ISS.jpg",
@@ -155,10 +214,7 @@ class WeatherPicsTableViewController: UITableViewController {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
     
     // MARK: - Table view data source
     
@@ -168,10 +224,10 @@ class WeatherPicsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell : UITableViewCell
-
+        
         if weatherPics.count == 0 {
             cell = tableView.dequeueReusableCell(withIdentifier: noWeatherPicsCellIdentifier, for: indexPath)
-
+            
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: weatherPicCellIdentifier, for: indexPath)
             let weatherPic = weatherPics[indexPath.row]
@@ -184,7 +240,7 @@ class WeatherPicsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return weatherPics.count > 0
     }
-
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView,
                             commit editingStyle: UITableViewCellEditingStyle,
@@ -194,11 +250,11 @@ class WeatherPicsTableViewController: UITableViewController {
             picsRef.document(weatherPicToDelete.id!).delete()
         }    
     }
-  
+    
     
     
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.

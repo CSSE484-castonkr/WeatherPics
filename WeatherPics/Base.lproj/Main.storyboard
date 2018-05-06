@@ -14,7 +14,7 @@
         <!--Weather Pics-->
         <scene sceneID="bTZ-gF-Zai">
             <objects>
-                <tableViewController id="UGQ-Vw-EUS" customClass="WeatherPicsTableViewController" customModule="WeatherPics" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="WeatherPicsTableViewController" id="UGQ-Vw-EUS" customClass="WeatherPicsTableViewController" customModule="WeatherPics" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cyp-Ol-rQ5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -64,7 +64,13 @@
                             <outlet property="delegate" destination="UGQ-Vw-EUS" id="dld-jI-1je"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Weather Pics" id="J52-JP-nH9"/>
+                    <navigationItem key="navigationItem" title="Weather Pics" id="Rwz-6o-z2w">
+                        <barButtonItem key="rightBarButtonItem" title="Menu" id="d9D-kY-fkJ">
+                            <connections>
+                                <action selector="menuButtonPressed:" destination="UGQ-Vw-EUS" id="5m6-sT-jEC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Qw-V6-AAN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -198,6 +204,61 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ohb-sn-olR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="811.84407796101959" y="-455.19999999999999"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="aim-6R-Tqo">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="nDv-cX-Zb0" customClass="LoginViewController" customModule="WeatherPics" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ceO-s8-qx8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo Bucket" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="28p-3O-lox">
+                                <rect key="frame" x="101" y="100" width="172" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0x-3k-CEh" customClass="RaisedButton" customModule="Material">
+                                <rect key="frame" x="112.5" y="236" width="150" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="lqz-vH-An5"/>
+                                </constraints>
+                                <state key="normal" title="Login with Rosefire">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="rosefireLogin:" destination="nDv-cX-Zb0" eventType="touchUpInside" id="N2Z-Uu-xPG"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wyi-IK-1tX" customClass="GIDSignInButton">
+                                <rect key="frame" x="112.5" y="290" width="150" height="30"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="wsF-Pq-dIc"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.56904578210000001" blue="0.57461684940000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="28p-3O-lox" firstAttribute="centerX" secondItem="V9A-XP-6Wp" secondAttribute="centerX" id="56l-EX-JcA"/>
+                            <constraint firstItem="Wyi-IK-1tX" firstAttribute="centerX" secondItem="V9A-XP-6Wp" secondAttribute="centerX" id="MSe-iZ-eXd"/>
+                            <constraint firstItem="Wyi-IK-1tX" firstAttribute="width" secondItem="n0x-3k-CEh" secondAttribute="width" id="fqQ-Ll-dRi"/>
+                            <constraint firstItem="Wyi-IK-1tX" firstAttribute="top" secondItem="n0x-3k-CEh" secondAttribute="bottom" constant="24" id="rb0-mG-8yK"/>
+                            <constraint firstItem="n0x-3k-CEh" firstAttribute="centerX" secondItem="V9A-XP-6Wp" secondAttribute="centerX" id="s5Z-X2-BGg"/>
+                            <constraint firstItem="28p-3O-lox" firstAttribute="top" secondItem="V9A-XP-6Wp" secondAttribute="top" constant="80" id="sCB-kd-BtP"/>
+                            <constraint firstItem="n0x-3k-CEh" firstAttribute="top" secondItem="28p-3O-lox" secondAttribute="bottom" constant="100" id="xy8-gn-lFP"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="V9A-XP-6Wp"/>
+                    </view>
+                    <connections>
+                        <outlet property="googleLoginButton" destination="Wyi-IK-1tX" id="nG4-bY-6V8"/>
+                        <outlet property="rosefireLoginButton" destination="n0x-3k-CEh" id="VRQ-4M-lF0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WEf-89-gn7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1145" y="-1167"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WDH-Ys-Nq3">

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8DA688DE208ED17200D9F193 /* WeatherPic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA688DD208ED17200D9F193 /* WeatherPic.swift */; };
 		8DA688E0208ED44000D9F193 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8DA688DF208ED43F00D9F193 /* GoogleService-Info.plist */; };
+		8DB3D1C9209EC55E0047097F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB3D1C8209EC55E0047097F /* LoginViewController.swift */; };
 		8DFA2EB1208106A8003483B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFA2EB0208106A8003483B4 /* AppDelegate.swift */; };
 		8DFA2EBB208106A8003483B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DFA2EB9208106A8003483B4 /* Main.storyboard */; };
 		8DFA2EBD208106AB003483B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DFA2EBC208106AB003483B4 /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 		74A23E1A498B8D098960768A /* Pods_WeatherPics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherPics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DA688DD208ED17200D9F193 /* WeatherPic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPic.swift; sourceTree = "<group>"; };
 		8DA688DF208ED43F00D9F193 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8DB3D1C8209EC55E0047097F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8DFA2EAD208106A8003483B4 /* WeatherPics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherPics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DFA2EB0208106A8003483B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8DFA2EBA208106A8003483B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				8DFA2EC7208108E0003483B4 /* WeatherPicsTableViewController.swift */,
 				8DFA2ECB2081809A003483B4 /* WeatherPicDetailViewController.swift */,
 				8DA688DD208ED17200D9F193 /* WeatherPic.swift */,
+				8DB3D1C8209EC55E0047097F /* LoginViewController.swift */,
 			);
 			path = WeatherPics;
 			sourceTree = "<group>";
@@ -109,6 +112,7 @@
 				8DFA2EAA208106A8003483B4 /* Frameworks */,
 				8DFA2EAB208106A8003483B4 /* Resources */,
 				B9C3DCC9C0856123D98B7D40 /* [CP] Embed Pods Frameworks */,
+				EACB0972F13EFC327B54E1FC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -193,8 +197,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WeatherPics/Pods-WeatherPics-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/FoldingCell/FoldingCell.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Material/Material.framework",
+				"${BUILT_PRODUCTS_DIR}/Motion/Motion.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/Rosefire/Rosefire.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
@@ -205,8 +215,14 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FoldingCell.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Material.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Motion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Rosefire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
@@ -219,6 +235,24 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WeatherPics/Pods-WeatherPics-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		EACB0972F13EFC327B54E1FC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-WeatherPics/Pods-WeatherPics-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WeatherPics/Pods-WeatherPics-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -229,6 +263,7 @@
 				8DFA2EB1208106A8003483B4 /* AppDelegate.swift in Sources */,
 				8DFA2ECC2081809A003483B4 /* WeatherPicDetailViewController.swift in Sources */,
 				8DFA2EC8208108E0003483B4 /* WeatherPicsTableViewController.swift in Sources */,
+				8DB3D1C9209EC55E0047097F /* LoginViewController.swift in Sources */,
 				8DA688DE208ED17200D9F193 /* WeatherPic.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
