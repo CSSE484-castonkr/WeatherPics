@@ -5,24 +5,20 @@
 //  Created by Kiana Caston on 4/13/18.
 //  Copyright © 2018 Kiana Caston. All rights reserved.
 //
-
 import UIKit
 import Firebase
 
 class WeatherPicDetailViewController: UIViewController {
-
+    
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
-    var photoRef: DocumentReference?
+    var photoRef: DocumentReference!
     var photoListener: ListenerRegistration!
-    var photo: WeatherPic?
+    var photo: WeatherPic!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
-                                                            target: self,
-                                                            action: #selector(showEditDialog))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,17 +36,24 @@ class WeatherPicDetailViewController: UIViewController {
             self.updateView()
         })
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         photoListener.remove()
     }
-
+    
     func updateView() {
         captionLabel.text = photo?.caption
-//        movieLabel.text = photo?.movie
+        let currentUser = Auth.auth().currentUser!
+        
+        if (photo != nil && currentUser.uid.isEqual(photo.uid)) {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
+                                                                target: self,
+                                                                action: #selector(showEditDialog))
+        }
+        
     }
-
+    
     @objc func showEditDialog() {
         let alertController = UIAlertController(title: "Edit caption",
                                                 message: "",

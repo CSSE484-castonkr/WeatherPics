@@ -5,7 +5,6 @@
 //  Created by Kiana Caston on 4/13/18.
 //  Copyright © 2018 Kiana Caston. All rights reserved.
 //
-
 import UIKit
 import Firebase
 
@@ -22,7 +21,6 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
     let weatherPicCellIdentifier = "WeatherPicCell"
     let noWeatherPicsCellIdentifier = "NoWeatherPicsCell"
     let showDetailSegueIdentifier = "ShowDetailSegue"
-    //    let currentUser = Auth.auth().currentUser!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,8 +127,8 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
             }
         } else {
             editPhotoActionButton = UIAlertAction(title: "Select photos to delete",
-                                                      style: .default) { (action) in
-                                                        self.isEditing = true
+                                                  style: .default) { (action) in
+                                                    self.isEditing = true
             }
         }
         
@@ -167,14 +165,6 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
         
         self.present(alertController, animated: true, completion: nil)
     }
-    
-    //    func showMyPhotos() {
-    //
-    //    }
-    //
-    //    func showAllPhotos() {
-    //
-    //    }
     
     @objc func showAddDialog() {
         let alertController = UIAlertController(title: "Create a new weather pic:",
@@ -221,7 +211,7 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
         let randomIndex = Int(arc4random_uniform(UInt32(testImages.count)))
         return testImages[randomIndex];
     }
-
+    
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -255,7 +245,7 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let currentUID = Auth.auth().currentUser!.uid
-
+        
         if weatherPics.count > 0 && currentUID.isEqual(weatherPics[indexPath.row].uid) {
             return true
         }
