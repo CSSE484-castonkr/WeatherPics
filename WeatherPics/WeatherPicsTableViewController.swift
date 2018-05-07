@@ -15,27 +15,34 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
     var picsRef: CollectionReference!
     var picsListener: ListenerRegistration!
     var myPhotosQuery: Query!
+    
+    var showAllPhotos = true
     var weatherPics = [WeatherPic]()
     
     let weatherPicCellIdentifier = "WeatherPicCell"
     let noWeatherPicsCellIdentifier = "NoWeatherPicsCell"
     let showDetailSegueIdentifier = "ShowDetailSegue"
-    
+    //    let currentUser = Auth.auth().currentUser!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         picsRef = Firestore.firestore().collection("pics")
         docRef = Firestore.firestore().collection("pics").document("title")
-        if let currentUser = Auth.auth().currentUser {
-            myPhotosQuery = picsRef
-                .whereField("uid", isEqualTo: currentUser.uid)
-        }
+        //        if let currentUser = Auth.auth().currentUser {
+        //            myPhotosQuery = picsRef
+        //                .whereField("uid", isEqualTo: currentUser.uid)
+        //        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setTitle()
         self.weatherPics.removeAll()
+        
+        //        if (!showAllPhotos) {
+        //            self.weatherPics = myPhotosQuery
+        //        }
+        
         picsListener = picsRef.order(by: "created", descending: true).limit(to: 50).addSnapshotListener({ (querySnapshot, error) in
             guard let snapshot = querySnapshot else {
                 print("Error fetching quotes. error: \(error!.localizedDescription)")
@@ -113,14 +120,34 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
                                                     print("add")
         }
         
-        let editPhotoActionButton = UIAlertAction(title: "edit",
+        var editPhotoActionButton: UIAlertAction
+        
+        if (isEditing) {
+            editPhotoActionButton = UIAlertAction(title: "Done editing",
                                                   style: .default) { (action) in
-                                                    print("edit")
+                                                    self.isEditing = false
+            }
+        } else {
+            editPhotoActionButton = UIAlertAction(title: "Select photos to delete",
+                                                      style: .default) { (action) in
+                                                        self.isEditing = true
+            }
         }
         
-        let showPhotosActionButton = UIAlertAction(title: "Show photos",
+        var showPhotosActionButton: UIAlertAction
+        
+        if (showAllPhotos){
+            showPhotosActionButton = UIAlertAction(title: "Show only my photos",
                                                    style: .default) { (action) in
-                                                    print("show photos")
+                                                    self.showAllPhotos = false
+                                                    //                                                    self.showMyPhotos()
+            }
+        } else {
+            showPhotosActionButton = UIAlertAction(title: "Show all photos",
+                                                   style: .default) { (action) in
+                                                    self.showAllPhotos = true
+                                                    //                                                    self.showAllPhotos()
+            }
         }
         
         let signoutActionButton = UIAlertAction(title: "Sign out",
@@ -141,6 +168,13 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
         self.present(alertController, animated: true, completion: nil)
     }
     
+    //    func showMyPhotos() {
+    //
+    //    }
+    //
+    //    func showAllPhotos() {
+    //
+    //    }
     
     @objc func showAddDialog() {
         let alertController = UIAlertController(title: "Create a new weather pic:",
@@ -187,15 +221,7 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
         let randomIndex = Int(arc4random_uniform(UInt32(testImages.count)))
         return testImages[randomIndex];
     }
-    
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        if weatherPics.count == 0 {
-            super.setEditing(false, animated: animated)
-        } else {
-            super.setEditing(editing, animated: animated)
-        }
-    }
-    
+
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -216,9 +242,25 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
         return cell
     }
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        print(weatherPics.count)
+        if weatherPics.count == 0 {
+            super.setEditing(false, animated: animated)
+        } else {
+            super.setEditing(editing, animated: animated)
+        }
+    }
+    
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return weatherPics.count > 0
+        let currentUID = Auth.auth().currentUser!.uid
+
+        if weatherPics.count > 0 && currentUID.isEqual(weatherPics[indexPath.row].uid) {
+            return true
+        }
+        
+        return false
     }
     
     // Override to support editing the table view.
