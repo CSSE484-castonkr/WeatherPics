@@ -13,7 +13,6 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
     var docRef: DocumentReference!
     var picsRef: CollectionReference!
     var picsListener: ListenerRegistration!
-    var myPhotosQuery: Query!
     
     var showAllPhotos = true
     var weatherPics = [WeatherPic]()
@@ -26,10 +25,6 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
         super.viewDidLoad()
         picsRef = Firestore.firestore().collection("pics")
         docRef = Firestore.firestore().collection("pics").document("title")
-        //        if let currentUser = Auth.auth().currentUser {
-        //            myPhotosQuery = picsRef
-        //                .whereField("uid", isEqualTo: currentUser.uid)
-        //        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,33 +32,58 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
         setTitle()
         self.weatherPics.removeAll()
         
-        //        if (!showAllPhotos) {
-        //            self.weatherPics = myPhotosQuery
-        //        }
-        
-        picsListener = picsRef.order(by: "created", descending: true).limit(to: 50).addSnapshotListener({ (querySnapshot, error) in
-            guard let snapshot = querySnapshot else {
-                print("Error fetching quotes. error: \(error!.localizedDescription)")
-                return
-            }
-            snapshot.documentChanges.forEach{(docChange) in
-                if (docChange.type == .added){
-                    print("New pic: \(docChange.document.data())")
-                    self.picAdded(docChange.document)
-                } else if (docChange.type == .modified){
-                    print("Modified pic: \(docChange.document.data())")
-                    self.picUpdated(docChange.document)
-                } else if (docChange.type == .removed){
-                    print("Removed pic: \(docChange.document.data())")
-                    self.picRemoved(docChange.document)
+        if showAllPhotos {
+            picsListener = picsRef.order(by: "created", descending: true).limit(to: 50).addSnapshotListener({ (querySnapshot, error) in
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching quotes. error: \(error!.localizedDescription)")
+                    return
+                }
+                snapshot.documentChanges.forEach{(docChange) in
+                    if (docChange.type == .added){
+                        print("New pic: \(docChange.document.data())")
+                        self.picAdded(docChange.document)
+                    } else if (docChange.type == .modified){
+                        print("Modified pic: \(docChange.document.data())")
+                        self.picUpdated(docChange.document)
+                    } else if (docChange.type == .removed){
+                        print("Removed pic: \(docChange.document.data())")
+                        self.picRemoved(docChange.document)
+                    }
+                }
+                self.weatherPics.sort(by: { (pic1, pic2) -> Bool in
+                    return pic1.created > pic2.created
+                })
+                self.tableView.reloadData()
+            })
+        }
+        else {
+            if let currentUser = Auth.auth().currentUser {
+                picsListener = picsRef
+                    .whereField("uid", isEqualTo: currentUser.uid)
+                    .addSnapshotListener { (querySnapshot, error) in
+                        guard let snapshot = querySnapshot else {
+                            print("Error fetching documents: \(error!.localizedDescription)")
+                            return
+                        }
+                        snapshot.documentChanges.forEach{(docChange) in
+                            if (docChange.type == .added){
+                                print("New pic: \(docChange.document.data())")
+                                self.picAdded(docChange.document)
+                            } else if (docChange.type == .modified){
+                                print("Modified pic: \(docChange.document.data())")
+                                self.picUpdated(docChange.document)
+                            } else if (docChange.type == .removed){
+                                print("Removed pic: \(docChange.document.data())")
+                                self.picRemoved(docChange.document)
+                            }
+                        }
+                        self.weatherPics.sort(by: { (pic1, pic2) -> Bool in
+                            return pic1.created > pic2.created
+                        })
+                        self.tableView.reloadData()
                 }
             }
-            self.weatherPics.sort(by: { (pic1, pic2) -> Bool in
-                return pic1.created > pic2.created
-            })
-            self.tableView.reloadData()
-        })
-        
+        }
     }
     
     func setTitle() {
@@ -138,13 +158,13 @@ class WeatherPicsTableViewController: UITableViewController, UIActionSheetDelega
             showPhotosActionButton = UIAlertAction(title: "Show only my photos",
                                                    style: .default) { (action) in
                                                     self.showAllPhotos = false
-                                                    //                                                    self.showMyPhotos()
+                                                    self.viewWillAppear(true)
             }
         } else {
             showPhotosActionButton = UIAlertAction(title: "Show all photos",
                                                    style: .default) { (action) in
                                                     self.showAllPhotos = true
-                                                    //                                                    self.showAllPhotos()
+                                                    self.viewWillAppear(true)
             }
         }
         
